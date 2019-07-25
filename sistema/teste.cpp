@@ -8,8 +8,8 @@ using namespace std;
 class testeAbstrato{
 protected:
 public:
-  virtual void setTestet();
-  virtual string getString();
+  virtual void setTestet(string) = 0;
+  virtual string getString() = 0;
 };
 
 class testePolimorfismo2 : public testeAbstrato{
@@ -42,17 +42,17 @@ public:
 
 class teste{
 private:
-  vector<testeAbstrato> a;
+  vector<testeAbstrato *> a;
   bool tipo;
 public:
   teste(){};
-  void setString(testeAbstrato teste){
+  void setString(testeAbstrato *teste){
     a.push_back(teste);
   };
   vector<string> getString(){
     vector<string> teste;
     for(auto &i : a){
-      teste.push_back(i.getString());
+      teste.push_back(i->getString());
     }
     return teste;
   };
@@ -78,7 +78,7 @@ int main(){
 
       testep1.setTestet(teste);
 
-      t1.setString(testep1);
+      t1.setString(&testep1);
       cout << "Continuar? ";
       cin >> o;
       break;
@@ -88,7 +88,7 @@ int main(){
 
       testep2.setTestet(teste);
 
-      t1.setString(testep2);
+      t1.setString(&testep2);
       cout << "Continuar? ";
       cin >> o;
       break;
