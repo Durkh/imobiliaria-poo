@@ -102,6 +102,7 @@ int main(){
     cout << teste1[i] << endl;
   }
 
+  return 1;
   return 0;
 
 }
