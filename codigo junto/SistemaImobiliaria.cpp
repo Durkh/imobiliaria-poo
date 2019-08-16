@@ -5,14 +5,92 @@
  *      Author: egidio
  */
 
-#include "SIstemaImobiliaria.h"
+#include "SistemaImobiliaria.h"
 
-SIstemaImobiliaria::SIstemaImobiliaria() {
+SistemaImobiliaria::SistemaImobiliaria() {
 	// TODO Auto-generated constructor stub
 
 }
 
-SIstemaImobiliaria::~SIstemaImobiliaria() {
+void SistemaImobiliaria::CadastraImovel(Imovel* imovel) {
+	imoveis.push_back(imovel);
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImoveis() {
+
+	std::vector<Imovel*> buffer = imoveis;
+
+	return buffer;
+}
+
+std::vector<std::string> SistemaImobiliaria::getDescricao() {
+	std::vector<std::string> buffer;
+
+	for(auto i:imoveis){
+		buffer.push_back(i->getDescricao());
+	}
+
+	return buffer;
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImovelTipo(int tipo) {
+	std::vector<Imovel*> buffer;
+
+	for(auto i: imoveis){
+		if(i->getTipoOferta() == tipo)
+		buffer.push_back(i);
+	}
+
+	return buffer;
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImoveisAlugarBairro(
+		std::string bairro) {
+
+	std::vector<Imovel*> buffer;
+
+	for(auto i: imoveis){
+		if(i->getVenda() == false){
+			if(i->getBairro() == bairro){
+				buffer.push_back(i);
+			}
+		}
+
+	}
+
+	return buffer;
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImoveisVenderBairro(
+		std::string bairro) {
+
+	std::vector<Imovel*> buffer;
+
+	for(auto i: imoveis){
+		if(i->getVenda() == true){
+			if(i->getBairro() == bairro){
+				buffer.push_back(i);
+			}
+		}
+
+	}
+
+	return buffer;
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
+	std::vector<Imovel*> buffer;
+
+	for(auto i: imoveis){
+		if(i->getCidade() == cidade){
+			buffer.push_back(i);
+		}
+	}
+
+	return buffer;
+}
+
+SistemaImobiliaria::~SistemaImobiliaria() {
 	// TODO Auto-generated destructor stub
 }
 
@@ -28,15 +106,14 @@ void Endereco::setAll(std::string logradouro, int numero, std::string bairro, st
 	this->cep = cep;
 }
 
-Imovel::Imovel():valor(0), venda(false), aluguel(false), descricao("none"), tipo(-1) {
-
+Imovel::Imovel():valor(0), venda(false), descricao("none"), tipo(-1) {
 }
 
 std::string Imovel::getDescricao(){
 	return this->descricao;
 }
 
-bool Imovel::getTipoOferta(){
+int Imovel::getTipoOferta(){
 	return this->tipo;
 }
 
@@ -64,12 +141,44 @@ void Imovel::setEndereco(std::string logradouro, int numero, std::string bairro,
 	endereco.setNumero(numero);
 }
 
+bool Imovel::getVenda() {
+	return this->venda;
+}
+
+void Imovel::setTipo(int tipo) {
+	this->tipo = tipo;
+}
+
+void Imovel::setVenda(bool venda) {
+	this->venda = venda;
+}
+
+std::string Imovel::getBairro() {
+	return endereco.getBairro();
+}
+
+std::string Imovel::getCep() {
+	return endereco.getCep();
+}
+
+std::string Imovel::getCidade() {
+	return endereco.getCidade();
+}
+
+std::string Imovel::getLogradouro() {
+	return endereco.getLogradouro();
+}
+
+int Imovel::getNumero() {
+	return endereco.getNumero();
+}
+
 Imovel::~Imovel() {
 
 }
 
 Casa::Casa(int numPavimentos, int numQuartos, double areaTerreno,
-		double areaConstruida, bool venda, bool aluguel, double valor, int tipo,
+		double areaConstruida, bool venda, double valor, int tipo,
 		std::string descricao, std::string logradouro, int numero,
 		std::string bairro, std::string cidade, std::string cep) {
 
@@ -78,10 +187,9 @@ Casa::Casa(int numPavimentos, int numQuartos, double areaTerreno,
 	this->areaTerreno = areaTerreno;
 	this->areaConstruida = areaConstruida;
 	this->venda = venda;
-	this->aluguel = aluguel;
 	this->valor = valor;
 	this->tipo = tipo;
-	this->endereco = endereco.setAll(logradouro, numero, bairro, cep, cidade);
+	endereco.setAll(logradouro, numero, bairro, cep, cidade);
 
 }
 
@@ -121,7 +229,7 @@ Casa::~Casa() {
 }
 
 Apartamento::Apartamento(std::string posicao, int numQuartos, double valorCondominio, int vagasGaragem, double area,
-	bool venda, bool aluguel, double valor, int tipo, std::string descricao, std::string logradouro, int numero,
+	bool venda, double valor, int tipo, std::string descricao, std::string logradouro, int numero,
 	std::string bairro, std::string cidade, std::string cep){
 
 
@@ -131,10 +239,9 @@ Apartamento::Apartamento(std::string posicao, int numQuartos, double valorCondom
     this->vagasGaragem = vagasGaragem;
     this->area = area;
     this->venda = venda;
-    this->aluguel = aluguel;
     this->valor = valor;
     this->tipo = tipo;
-    this->endereco = endereco.setAll(logradouro, numero, bairro, cep, cidade);
+    endereco.setAll(logradouro, numero, bairro, cep, cidade);
 }
 
 std::string Apartamento::getPosicao() {
@@ -180,15 +287,14 @@ void Apartamento::setArea(double area) {
 Apartamento::~Apartamento() {
 }
 
-Terreno::Terreno(int area, bool venda, bool aluguel, double valor, int tipo, std::string descricao,
+Terreno::Terreno(int area, bool venda, double valor, int tipo, std::string descricao,
 		std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep) {
 
 	this->area = area;
 	this->venda = venda;
-	this->aluguel = aluguel;
     this->valor = valor;
     this->tipo = tipo;
-    this->endereco = endereco.setAll(logradouro, numero, bairro, cep, cidade);
+    endereco.setAll(logradouro, numero, bairro, cep, cidade);
 }
 
 double Terreno::getArea() {
