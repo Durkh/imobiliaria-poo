@@ -81,14 +81,14 @@ public:
 	virtual void setAreaConstruida(double areaConstruida)=0;
 
 	//metodos apartamento
-	virtual std::string getPosicao()=0;
-	virtual void setPosicao(std::string posicao)=0;
-	virtual double getValorCondominio()=0;
-	virtual void setValorCondominio(double valorCondominio)=0;
-	virtual int getVagasGaragem()=0;
-	virtual void setVagasGaragem(int vagasGaragem)=0;
-	virtual double getArea()=0;
-	virtual void setArea(double area)=0;
+	virtual std::string getPosicao();
+	virtual void setPosicao(std::string posicao);
+	virtual double getValorCondominio();
+	virtual void setValorCondominio(double valorCondominio);
+	virtual int getVagasGaragem();
+	virtual void setVagasGaragem(int vagasGaragem);
+	virtual double getArea();
+	virtual void setArea(double area);
 
 	virtual ~Imovel();
 };
