@@ -71,24 +71,24 @@ public:
 	int getNumero();
 
 	//metodos casa
-	virtual int getNumPavimentos() =0;
-	virtual void setNumPavimentos(int numPavimentos)=0;
-	virtual int getNumQuartos()=0;
-	virtual void setNumQuartos(int numQuartos)=0;
-	virtual double getAreaTerreno()=0;
-	virtual void setAreaTerreno(double areaTerreno)=0;
-	virtual double getAreaConstruida()=0;
-	virtual void setAreaConstruida(double areaConstruida)=0;
+	virtual int getNumPavimentos(){};
+    virtual void setNumPavimentos(int numPavimentos){};
+    virtual int getNumQuartos(){};
+    virtual void setNumQuartos(int numQuartos){};
+    virtual double getAreaTerreno(){};
+    virtual void setAreaTerreno(double areaTerreno){};
+    virtual double getAreaConstruida(){};
+    virtual void setAreaConstruida(double areaConstruida){};
 
 	//metodos apartamento
-	virtual std::string getPosicao();
-	virtual void setPosicao(std::string posicao);
-	virtual double getValorCondominio();
-	virtual void setValorCondominio(double valorCondominio);
-	virtual int getVagasGaragem();
-	virtual void setVagasGaragem(int vagasGaragem);
-	virtual double getArea();
-	virtual void setArea(double area);
+	virtual std::string getPosicao(){};
+    virtual void setPosicao(std::string posicao){};
+    virtual double getValorCondominio(){};
+    virtual void setValorCondominio(double valorCondominio){};
+    virtual int getVagasGaragem(){};
+    virtual void setVagasGaragem(int vagasGaragem){};
+    virtual double getArea(){};
+    virtual void setArea(double area){};
 
 	virtual ~Imovel();
 };
