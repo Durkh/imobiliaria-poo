@@ -304,7 +304,7 @@ void Apartamento::setArea(double area) {
 Apartamento::~Apartamento() {
 }
 
-Terreno::Terreno(int area, bool venda, double valor, int tipo, std::string descricao,
+Terreno::Terreno(double area, bool venda, double valor, int tipo, std::string descricao,
                  std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep) {
 
     this->area = area;

@@ -147,7 +147,7 @@ class Terreno: public Imovel{
 private:
     double area;
 public:
-    Terreno(int area, bool venda, double valor, int tipo, std::string descricao,
+    Terreno(double area, bool venda, double valor, int tipo, std::string descricao,
             std::string logradouro, int numero, std::string bairro, std::string cidade,
             std::string cep);
 
