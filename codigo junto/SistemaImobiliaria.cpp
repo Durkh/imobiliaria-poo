@@ -188,6 +188,24 @@ std::string Imovel::EnderecoToString(){
     return buffer.str();
 }
 
+std::string Imovel::basicToString(){
+  std::stringstream sstr;
+
+  sstr << "Titulo: " << getDescricao() << std::endl << "Bairro: " << endereco.getBairro()
+  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << getValor()
+  << std::endl;
+
+  return sstr.str();
+}
+
+std::string Imovel::overallToString(){
+  std::stringstream sstr;
+
+  sstr << "Titulo: " << getDescricao() << std::endl << "Valor: " << getValor() << EnderecoToString();
+
+  return sstr.str();
+}
+
 Imovel::~Imovel() {
 
 }
@@ -239,6 +257,16 @@ double Casa::getAreaConstruida() {
 
 void Casa::setAreaConstruida(double areaConstruida) {
     this->areaConstruida = areaConstruida;
+}
+
+std::string Casa::toString(){
+  std::stringstream sstr;
+
+  sstr << overallToString() << "Numero de pavimentos: " << getNumPavimentos() << std::endl
+  << "Numero de quartos: " << getNumQuartos() << std::endl << "Área do terreno: " << getAreaTerreno()
+  << std::endl << "Área construida: " << getAreaConstruida() << std::endl;
+
+  return sstr.str();
 }
 
 Casa::~Casa() {

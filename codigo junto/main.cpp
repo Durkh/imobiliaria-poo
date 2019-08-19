@@ -126,9 +126,60 @@ void Menu(int &escolha){
 
 void MenuEscolheCadastro(int &escolha){
   system("clear");
-  
+
   std::cout << "Escolha uma opção:\n  1-Casa.\n  2-Apartamento.\n  3-Terreno.\n";
   std::cin >> escolha;
+}
+
+void MenuMostrar(int &escolha){
+  std::cout << "Escolha uma opção:\n  1-Listagem simples.\n  2-Listagem por tipo";
+  std::cout << "(casa, apartamento, terreno).\n  3-Listagem por categoria(venda, aluguel).\n";
+  std::cin >> escolha;
+}
+
+void MenuMostrarPorTipo(int &escolha){
+  system("clear");
+
+  std::cout << "Escolha uma opção:\n  1-Listagem por casa.\n  2-Listagem por apartamento.\n  3-Listagem por terreno.\n";
+  std::cin >> escolha;
+}
+
+void PrintImoveisPorTipo(SistemaImobiliaria &sistema, int &escolha){
+  {
+    system("clear");
+    std::vector<Imovel*> myvector = sistema.getImoveis();
+    for(auto &i: myvector){
+      if(i->getTipoOferta() == escolha){
+        std::cout << "=================================\n";
+        std::cout << i->toString();
+      }
+    }
+  }
+}
+
+void MenuMostrarPorOferta(int &escolha){
+  std::cout << "Escolha uma opção:\n  1-Venda.\n  0-Aluguel.\n";
+  std::cin >> escolha;
+}
+
+void PrintImoveisPorOferta(SistemaImobiliaria &sistema, int &escolha){
+  {
+    system("clear");
+    std::vector<Imovel*> myvector = sistema.getImoveis();
+    for(auto &i: myvector){
+      if(escolha){
+        if(i->getVenda()){
+          std::cout << "=================================\n";
+          std::cout << i->toString();
+        }
+      }else{
+        if(i->getVenda() == false){
+          std::cout << "=================================\n";
+          std::cout << i->toString();
+        }
+      }
+    }
+  }
 }
 
 int main(void){
@@ -157,20 +208,33 @@ int main(void){
         std::cout << "Digite uma opção válida.\n";
         }
         break;
-        case 2:
+      case 2:
+      MenuMostrar(escolha);
+      switch(escolha){
+        case 1:
         {
           system("clear");
           std::vector<Imovel*> myvector = sistema.getImoveis();
           for(auto &i: myvector){
-            std::cout << i->getTipoOferta() << std::endl;
+            std::cout << "=================================\n";
+            std::cout << i->basicToString();
           }
         }
         break;
-        case 0:
-        return 1;
-        default:
-        std::cout << "Digite uma opção válida.\n";
-      }
+        case 2:
+        MenuMostrarPorTipo(escolha);
+        PrintImoveisPorTipo(sistema, escolha);
+        break;
+        case 3:
+        MenuMostrarPorOferta(escolha);
+        PrintImoveisPorOferta(sistema, escolha);
+        }
+      break;
+      case 0:
+      return 1;
+      default:
+      std::cout << "Digite uma opção válida.\n";
+    }
   }
 
   return 0;

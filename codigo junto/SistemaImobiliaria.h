@@ -89,6 +89,11 @@ public:
     virtual double getArea(){return 0;};
     virtual void setArea(double area){};
 
+    std::string basicToString();
+    std::string overallToString();
+
+    virtual std::string toString(){return 0;};
+
     virtual ~Imovel();
 };
 
@@ -112,6 +117,8 @@ public:
     void setAreaTerreno(double areaTerreno);
     double getAreaConstruida();
     void setAreaConstruida(double areaConstruida);
+
+    std::string toString();
 
     virtual ~Casa();
 };
