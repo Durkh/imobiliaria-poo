@@ -6,6 +6,7 @@
  */
 
 #include "SistemaImobiliaria.h"
+#include <sstream>
 
 SistemaImobiliaria::SistemaImobiliaria() {
 	// TODO Auto-generated constructor stub
@@ -174,8 +175,16 @@ int Imovel::getNumero() {
 }
 
 std::string Imovel::EnderecoToString(){
-	return " " + endereco.getLogradouro() + " " + endereco.getNumero() + " " + endereco.getCep() + " " +
-			endereco.getBairro() + " " + endereco.getCidade();
+	std::stringstream buffer;
+
+	buffer << endereco.getLogradouro() << std::endl;
+	buffer << endereco.getNumero() << std::endl;
+	buffer << endereco.getCep() << std::endl;
+	buffer << endereco.getBairro() << std::endl;
+	buffer << endereco.getCidade() << std::endl;
+
+
+	return buffer.str();
 }
 
 Imovel::~Imovel() {
@@ -320,6 +329,7 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
 	std::ifstream buffer;
 	std::vector<Imovel*> imoveis;
 	Imovel* x;
+	int tipo;
 
 	buffer.open("Imobiliaria.txt");
 
@@ -327,37 +337,125 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
 		std::cout << "erro ao abrir arquivo" << std::endl;
 		return imoveis;
 	}
+	while(true){
 
-	int tipo;
+		if(buffer.bad() | buffer.eof() | buffer.fail()) break;
 
-	buffer >> tipo;
+		buffer >> tipo;
 
-	switch(tipo){
-		case 1:{
-			x = new Casa;
+		switch(tipo){
+			case 1:{
+
+				int numPavimentos, numQuartos, numero;
+				double areaTerreno, areaConstruida, valor;
+				bool venda;
+				std::string descricao, logradouro, bairro, cidade, cep;
+
+				buffer >> valor;
+				buffer.ignore();
+				buffer >> logradouro;
+				buffer.ignore();
+				buffer >> numero;
+				buffer.ignore();
+				buffer >> cep;
+				buffer.ignore();
+				buffer >> bairro;
+				buffer.ignore();
+				buffer >> cidade;
+				buffer.ignore();
+				buffer >> descricao;
+				buffer.ignore();
+				buffer >> venda;
+				buffer.ignore();
+				buffer >> numPavimentos;
+				buffer.ignore();
+				buffer >> numQuartos;
+				buffer.ignore();
+				buffer >> areaTerreno;
+				buffer.ignore();
+				buffer >> areaConstruida;
+				buffer.ignore();
+
+				x = new Casa(numPavimentos, numQuartos, areaTerreno, areaConstruida, venda, valor, tipo,
+						descricao, logradouro, numero, bairro, cidade, cep);
+				imoveis.push_back(x);
+				delete x;
+				}
+				break;
+			case 2:{
+
+				std::string posicao, descricao, logradouro, bairro, cidade, cep;
+				int numQuartos, numero, vagasGaragem;
+				double valorCondominio, area, valor;
+				bool venda;
 
 
+				buffer >> valor;
+				buffer.ignore();
+				buffer >> logradouro;
+				buffer.ignore();
+				buffer >> numero;
+				buffer.ignore();
+				buffer >> cep;
+				buffer.ignore();
+				buffer >> bairro;
+				buffer.ignore();
+				buffer >> cidade;
+				buffer.ignore();
+				buffer >> descricao;
+				buffer.ignore();
+				buffer >> venda;
+				buffer.ignore();
+				buffer >> posicao;
+				buffer.ignore();
+				buffer >> numQuartos;
+				buffer.ignore();
+				buffer >> valorCondominio;
+				buffer.ignore();
+				buffer >> vagasGaragem;
+				buffer.ignore();
+				buffer >> area;
+				buffer.ignore();
 
-			imoveis.push_back(x);
-			delete x;
+				x = new Apartamento(posicao, numQuartos, valorCondominio, vagasGaragem, area, venda,
+						valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
+
+				imoveis.push_back(x);
+				delete x;
+				}
+				break;
+			case 3:{
+
+				int area, numero;
+				bool venda;
+				double valor;
+				std::string descricao, logradouro, bairro, cidade, cep;
+
+				buffer >> valor;
+				buffer.ignore();
+				buffer >> logradouro;
+				buffer.ignore();
+				buffer >> numero;
+				buffer.ignore();
+				buffer >> cep;
+				buffer.ignore();
+				buffer >> bairro;
+				buffer.ignore();
+				buffer >> cidade;
+				buffer.ignore();
+				buffer >> descricao;
+				buffer.ignore();
+				buffer >> venda;
+				buffer.ignore();
+				buffer >> area;
+
+				x = new Terreno(area, venda, valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
+				imoveis.push_back(x);
+				delete x;
 			}
 			break;
-		case 2:{
-			x = new Apartamento;
-
-			imoveis.push_back(x);
-			delete x;
-			}
-			break;
-		case 3:{
-			x = new Terreno;
-
-			imoveis.push_back(x);
-			delete x;
 		}
-		break;
 	}
-
 	return imoveis;
 }
 
@@ -380,20 +478,20 @@ void GerenteDePersistencia::SalvaImoveis(std::vector<Imovel*> lista) {
 
 		switch(i->getTipoOferta()){
 			case 1:
-				buffer << i->getNumPavimentos();
-				buffer << i->getNumQuartos();
-				buffer << i->getAreaTerreno();
-				buffer << i->getAreaConstruida();
+				buffer << i->getNumPavimentos() << std::endl;
+				buffer << i->getNumQuartos() << std::endl;
+				buffer << i->getAreaTerreno() << std::endl;
+				buffer << i->getAreaConstruida() << std::endl;
 				break;
 			case 2:
-				buffer << i->getPosicao();
-				buffer << i->getNumQuartos();
-				buffer << i->getValorCondominio();
-				buffer << i->getVagasGaragem();
-				buffer << i->getArea();
+				buffer << i->getPosicao() << std::endl;
+				buffer << i->getNumQuartos() << std::endl;
+				buffer << i->getValorCondominio() << std::endl;
+				buffer << i->getVagasGaragem() << std::endl;
+				buffer << i->getArea() << std::endl;
 				break;
 			case 3:
-				buffer << i->getArea();
+				buffer << i->getArea() << std::endl;
 		}
 	}
 
