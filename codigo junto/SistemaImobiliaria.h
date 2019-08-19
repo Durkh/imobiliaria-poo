@@ -1,5 +1,5 @@
 /*
- * SIstemaImobiliaria.h
+ * SistemaImobiliaria.h
  *
  *  Created on: 19 de jul de 2019
  *      Author: egidio
@@ -10,12 +10,7 @@
 
 #include <iostream>
 #include <vector>
-
-class GerenteDePersistencia{
-public:
-	GerenteDePersistencia();
-	virtual ~GerenteDePersistencia();
-};
+#include <fstream>
 
 class Endereco{	//funcional
 private:
@@ -45,50 +40,54 @@ public:
 class Imovel {
 protected:
 	double valor;
-	bool venda;
+	bool venda; //true = vendendo, false = alugando
 	Endereco endereco = Endereco();
 	std::string descricao;
-	int tipo;
+	int tipo; //tipo do imovel 1-casa, 2-apê, 3-terreno
 public:
 	Imovel();
 
 	virtual double getValor();
-	virtual int getTipoOferta();
+	virtual int getTipoOferta(); //getTipo
 	virtual Endereco getEndereco();
 	virtual std::string getDescricao();
 	virtual bool getVenda();
 
 	virtual void setDescricao(std::string descricao);
-	virtual void setEndereco(std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep);
+	virtual void setEndereco(std::string logradouro, int numero, std::string bairro,
+			std::string cidade, std::string cep);
 	virtual void setValor(double valor);
 	virtual void setTipo(int tipo);
 	virtual void setVenda(bool venda);
 
+	//metodos de endereco
 	std::string getBairro();
 	std::string getCep();
 	std::string getCidade();
 	std::string getLogradouro();
 	int getNumero();
 
-	//metodos casa
-	virtual int getNumPavimentos() =0;
-	virtual void setNumPavimentos(int numPavimentos)=0;
-	virtual int getNumQuartos()=0;
-	virtual void setNumQuartos(int numQuartos)=0;
-	virtual double getAreaTerreno()=0;
-	virtual void setAreaTerreno(double areaTerreno)=0;
-	virtual double getAreaConstruida()=0;
-	virtual void setAreaConstruida(double areaConstruida)=0;
+	std::string EnderecoToString();
 
-	//metodos apartamento
-	virtual std::string getPosicao()=0;
-	virtual void setPosicao(std::string posicao)=0;
-	virtual double getValorCondominio()=0;
-	virtual void setValorCondominio(double valorCondominio)=0;
-	virtual int getVagasGaragem()=0;
-	virtual void setVagasGaragem(int vagasGaragem)=0;
-	virtual double getArea()=0;
-	virtual void setArea(double area)=0;
+	//metodos casa
+    virtual int getNumPavimentos(){return 0;};
+    virtual void setNumPavimentos(int numPavimentos){};
+    virtual int getNumQuartos(){return 0;};
+    virtual void setNumQuartos(int numQuartos){};
+    virtual double getAreaTerreno(){return 0;};
+    virtual void setAreaTerreno(double areaTerreno){};
+    virtual double getAreaConstruida(){return 0;};
+    virtual void setAreaConstruida(double areaConstruida){};
+
+    //metodos apartamento
+    virtual std::string getPosicao(){ return 0;};
+    virtual void setPosicao(std::string posicao){};
+    virtual double getValorCondominio(){return 0;};
+    virtual void setValorCondominio(double valorCondominio){};
+    virtual int getVagasGaragem(){return 0;};
+    virtual void setVagasGaragem(int vagasGaragem){};
+    virtual double getArea(){return 0;};
+    virtual void setArea(double area){};
 
 	virtual ~Imovel();
 };
@@ -101,7 +100,9 @@ private:
     double areaConstruida;
 public:
 
-    Casa(int numPavimentos, int numQuartos, double areaTerreno, double areaConstruida, bool venda, double valor, int tipo, std::string descricao, std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep);
+    Casa(int numPavimentos, int numQuartos, double areaTerreno, double areaConstruida,
+    		bool venda, double valor, int tipo, std::string descricao, std::string logradouro,
+			int numero, std::string bairro, std::string cidade, std::string cep);
 
 	int getNumPavimentos();
 	void setNumPavimentos(int numPavimentos);
@@ -123,7 +124,10 @@ private:
 	int vagasGaragem;
 	double area;
 public:
-	Apartamento(std::string posicao, int numQuartos, double valorCondominio, int vagasGaragem, double area, bool venda, double valor, int tipo, std::string descricao, std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep);
+	Apartamento(std::string posicao, int numQuartos, double valorCondominio,
+			int vagasGaragem, double area, bool venda, double valor, int tipo,
+			std::string descricao, std::string logradouro, int numero, std::string bairro,
+			std::string cidade, std::string cep);
 
 	std::string getPosicao();
 	void setPosicao(std::string posicao);
@@ -143,7 +147,9 @@ class Terreno: public Imovel{
 private:
     double area;
 public:
-	Terreno(int area, bool venda, double valor, int tipo, std::string descricao, std::string logradouro, int numero, std::string bairro, std::string cidade, std::string cep);
+	Terreno(int area, bool venda, double valor, int tipo, std::string descricao,
+			std::string logradouro, int numero, std::string bairro, std::string cidade,
+			std::string cep);
 
 	double getArea();
 	void setArea(double area);
@@ -167,6 +173,16 @@ public:
 
 
 	virtual ~SistemaImobiliaria();
+};
+
+class GerenteDePersistencia{
+public:
+	GerenteDePersistencia();
+
+	std::vector<Imovel*> RecuperaImoveis();
+	void SalvaImoveis(std::vector <Imovel*> lista);
+
+	virtual ~GerenteDePersistencia();
 };
 
 #endif /* SISTEMAIMOBILIARIA_H_ */

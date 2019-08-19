@@ -173,6 +173,11 @@ int Imovel::getNumero() {
 	return endereco.getNumero();
 }
 
+std::string Imovel::EnderecoToString(){
+	return " " + endereco.getLogradouro() + " " + endereco.getNumero() + " " + endereco.getCep() + " " +
+			endereco.getBairro() + " " + endereco.getCidade();
+}
+
 Imovel::~Imovel() {
 
 }
@@ -309,6 +314,90 @@ Terreno::~Terreno() {
 }
 
 GerenteDePersistencia::GerenteDePersistencia() {
+}
+
+std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
+	std::ifstream buffer;
+	std::vector<Imovel*> imoveis;
+	Imovel* x;
+
+	buffer.open("Imobiliaria.txt");
+
+	if(!buffer.is_open() ){
+		std::cout << "erro ao abrir arquivo" << std::endl;
+		return imoveis;
+	}
+
+	int tipo;
+
+	buffer >> tipo;
+
+	switch(tipo){
+		case 1:{
+			x = new Casa;
+
+
+
+			imoveis.push_back(x);
+			delete x;
+			}
+			break;
+		case 2:{
+			x = new Apartamento;
+
+			imoveis.push_back(x);
+			delete x;
+			}
+			break;
+		case 3:{
+			x = new Terreno;
+
+			imoveis.push_back(x);
+			delete x;
+		}
+		break;
+	}
+
+	return imoveis;
+}
+
+void GerenteDePersistencia::SalvaImoveis(std::vector<Imovel*> lista) {
+	std::ofstream buffer;
+
+	buffer.open("Imobiliaria.txt");
+
+	if(!buffer.is_open() ){
+		std::cout << "erro ao abrir arquivo" << std::endl;
+		return;
+	}
+
+	for (auto i: lista){
+		buffer << i->getTipoOferta();
+		buffer << i->getValor();
+		buffer << i->EnderecoToString();
+		buffer << i->getDescricao();
+		buffer << i->getVenda();
+
+		switch(i->getTipoOferta()){
+			case 1:
+				buffer << i->getNumPavimentos();
+				buffer << i->getNumQuartos();
+				buffer << i->getAreaTerreno();
+				buffer << i->getAreaConstruida();
+				break;
+			case 2:
+				buffer << i->getPosicao();
+				buffer << i->getNumQuartos();
+				buffer << i->getValorCondominio();
+				buffer << i->getVagasGaragem();
+				buffer << i->getArea();
+				break;
+			case 3:
+				buffer << i->getArea();
+		}
+	}
+
+	buffer.close();
 }
 
 GerenteDePersistencia::~GerenteDePersistencia() {
