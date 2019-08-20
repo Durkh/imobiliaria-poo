@@ -120,7 +120,8 @@ void MenuCadastraTerreno(SistemaImobiliaria &sistema, int escolha){
 
 void Menu(int &escolha){
 
-  std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  3-Buscar.\n  0-Sair.\n";
+  std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  3-Buscar.\n  4-Remover.\n";
+  std::cout << "  0-Salvar & Sair.\n";
   std::cin >> escolha;
 }
 
@@ -176,27 +177,43 @@ void PrintImoveisPorOferta(SistemaImobiliaria &sistema, int &escolha){
 }
 
 void PrintVector(std::vector<Imovel *> myVector){
+  int indice = 0;
+
   for(auto &i: myVector){
     std::cout << "===============================\n";
-    std::cout << i->toString();
+    std::cout << "Índice: " << indice;
+    std::cout << i->toString() << std::endl;
+    indice++;
   }
 }
 
 void MenuBusca(int &escolha){
-  std::cout << "Escolha uma opção:\n  1-Cidade.\n";
+  std::cout << "Escolha uma opção:\n  1-Cidade.\n  2-Bairro.\n  3-Por Titulo.\n";
+  std::cout << "  4-Por valor maior que...\n  5-Por valor menor que...\n";
+  std::cin >> escolha;
+}
+
+void MenuRemover(SistemaImobiliaria &sistema, std::string &strForSearch, int &escolha){
+  std::cout << "Busque o imovel por titulo que deseja remover: ";
+  std::cin >> strForSearch;
+  PrintVector(sistema.getImoveisDescricao(strForSearch));
+  std::cout << "Digite o índice que deseja remover: ";
   std::cin >> escolha;
 }
 
 int main(void){
 
   SistemaImobiliaria sistema;
+  GerenteDePersistencia gerente;
 
   int escolha;
-  std::string cidade;
+  std::string strForSearch;
+  double valor;
+
+  sistema.setStartup(gerente.RecuperaImoveis());
 
   while(1){
     Menu(escolha);
-
     switch(escolha){
       case 1:
       MenuEscolheCadastro(escolha);
@@ -213,7 +230,7 @@ int main(void){
         default:
         std::cout << "Digite uma opção válida.\n";
         }
-        break;
+      break;
       case 2:
       MenuMostrar(escolha);
       switch(escolha){
@@ -234,6 +251,9 @@ int main(void){
         case 3:
         MenuMostrarPorOferta(escolha);
         PrintImoveisPorOferta(sistema, escolha);
+        break;
+        default:
+        std::cout << "Digite uma opção válida.\n";
         }
       break;
       case 3:
@@ -241,10 +261,38 @@ int main(void){
       switch(escolha){
         case 1:
         std::cout << "Digite a cidade que busca: ";
-        std::cin >> cidade;
-        PrintVector(sistema.getImoveisCidade(cidade));
+        std::cin >> strForSearch;
+        PrintVector(sistema.getImoveisCidade(strForSearch));
+        break;
+        case 2:
+        std::cout << "Digite o bairro que busca: ";
+        std::cin >> strForSearch;
+        PrintVector(sistema.getImoveisBairro(strForSearch));
+        break;
+        case 3:
+        std::cout << "Digite o titulo que busca: ";
+        std::cin >> strForSearch;
+        PrintVector(sistema.getImoveisDescricao(strForSearch));
+        break;
+        case 4:
+        std::cout << "Digite o valor: ";
+        std::cin >> valor;
+        PrintVector(sistema.getImoveisValorMaior(valor));
+        break;
+        case 5:
+        std::cout << "Digite o valor: ";
+        std::cin >> valor;
+        PrintVector(sistema.getImoveisValorMenor(valor));
+        default:
+        std::cout << "Digite uma opção válida.\n";
       }
+      break;
+      case 4:
+      MenuRemover(sistema, strForSearch, escolha);
+      sistema.eraseImovel(escolha);
+      break;
       case 0:
+      gerente.SalvaImoveis(sistema.getImoveis());
       return 1;
       default:
       std::cout << "Digite uma opção válida.\n";

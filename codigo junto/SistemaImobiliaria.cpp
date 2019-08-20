@@ -99,6 +99,72 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
     return buffer;
 }
 
+std::vector<Imovel*> SistemaImobiliaria::getImoveisBairro(std::string bairro) {
+    std::vector<Imovel*> buffer;
+    std::string temp;
+
+    boost::algorithm::to_lower(bairro);
+
+    for(auto i: imoveis){
+      temp = i->getBairro();
+      boost::algorithm::to_lower(temp);
+        if(temp.find(bairro) != std::string::npos){
+            buffer.push_back(i);
+        }
+    }
+
+    return buffer;
+}
+
+std::vector<Imovel*> SistemaImobiliaria::getImoveisDescricao(std::string descricao) {
+    std::vector<Imovel*> buffer;
+    std::string temp;
+
+    boost::algorithm::to_lower(descricao);
+
+    for(auto i: imoveis){
+      temp = i->getDescricao();
+      boost::algorithm::to_lower(temp);
+        if(temp.find(descricao) != std::string::npos){
+            buffer.push_back(i);
+        }
+    }
+
+    return buffer;
+}
+
+std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMaior(double valor){
+  std::vector<Imovel *> myVector;
+
+  for(auto &i: imoveis){
+    if(i->getValor() > valor){
+      myVector.push_back(i);
+    }
+  }
+
+  return myVector;
+}
+
+std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMenor(double valor){
+  std::vector<Imovel *> myVector;
+
+  for(auto &i: imoveis){
+    if(i->getValor() < valor){
+      myVector.push_back(i);
+    }
+  }
+
+  return myVector;
+}
+
+void SistemaImobiliaria::eraseImovel(int indice){
+  imoveis.erase(imoveis.begin() + indice - 1);
+}
+
+void SistemaImobiliaria::setStartup(std::vector<Imovel*> myVector){
+  imoveis = myVector;
+}
+
 SistemaImobiliaria::~SistemaImobiliaria() {
     // TODO Auto-generated destructor stub
 }

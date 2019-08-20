@@ -182,7 +182,14 @@ public:
     std::vector<Imovel*> getImoveisAlugarBairro(std::string bairro);
     std::vector<Imovel*> getImoveisVenderBairro(std::string bairro);
     std::vector<Imovel*> getImoveisCidade(std::string cidade);
+    std::vector<Imovel*> getImoveisBairro(std::string bairro);
+    std::vector<Imovel*> getImoveisDescricao(std::string descricao);
+    std::vector<Imovel*> getImoveisValorMaior(double valor);
+    std::vector<Imovel*> getImoveisValorMenor(double valor);
 
+    void setStartup(std::vector<Imovel*> myVector);
+
+    void eraseImovel(int indice);
 
     virtual ~SistemaImobiliaria();
 };
