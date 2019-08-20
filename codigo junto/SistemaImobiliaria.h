@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <string>
 
 class Endereco{	//funcional
 private:
@@ -147,6 +148,8 @@ public:
     double getArea();
     void setArea(double area);
 
+    std::string toString();
+
     virtual ~Apartamento();
 };
 
@@ -160,6 +163,8 @@ public:
 
     double getArea();
     void setArea(double area);
+
+    std::string toString();
 
     virtual ~Terreno();
 };

@@ -120,7 +120,7 @@ void MenuCadastraTerreno(SistemaImobiliaria &sistema, int escolha){
 
 void Menu(int &escolha){
 
-  std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  0-Sair.\n";
+  std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  3-Buscar.\n  0-Sair.\n";
   std::cin >> escolha;
 }
 
@@ -167,19 +167,24 @@ void PrintImoveisPorOferta(SistemaImobiliaria &sistema, int &escolha){
     system("clear");
     std::vector<Imovel*> myvector = sistema.getImoveis();
     for(auto &i: myvector){
-      if(escolha){
-        if(i->getVenda()){
-          std::cout << "=================================\n";
-          std::cout << i->toString();
-        }
-      }else{
-        if(i->getVenda() == false){
-          std::cout << "=================================\n";
-          std::cout << i->toString();
-        }
+      if(i->getVenda() == escolha){
+        std::cout << "=================================\n";
+        std::cout << i->toString();
       }
     }
   }
+}
+
+void PrintVector(std::vector<Imovel *> myVector){
+  for(auto &i: myVector){
+    std::cout << "===============================\n";
+    std::cout << i->toString();
+  }
+}
+
+void MenuBusca(int &escolha){
+  std::cout << "Escolha uma opção:\n  1-Cidade.\n";
+  std::cin >> escolha;
 }
 
 int main(void){
@@ -187,6 +192,7 @@ int main(void){
   SistemaImobiliaria sistema;
 
   int escolha;
+  std::string cidade;
 
   while(1){
     Menu(escolha);
@@ -230,6 +236,14 @@ int main(void){
         PrintImoveisPorOferta(sistema, escolha);
         }
       break;
+      case 3:
+      MenuBusca(escolha);
+      switch(escolha){
+        case 1:
+        std::cout << "Digite a cidade que busca: ";
+        std::cin >> cidade;
+        PrintVector(sistema.getImoveisCidade(cidade));
+      }
       case 0:
       return 1;
       default:

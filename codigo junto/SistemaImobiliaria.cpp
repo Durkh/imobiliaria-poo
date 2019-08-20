@@ -8,6 +8,8 @@
 #include "SistemaImobiliaria.h"
 
 #include <sstream>
+#include <boost/algorithm/string.hpp>
+#include <string>
 
 SistemaImobiliaria::SistemaImobiliaria() {
     // TODO Auto-generated constructor stub
@@ -82,9 +84,14 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisVenderBairro(
 
 std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
     std::vector<Imovel*> buffer;
+    std::string temp;
+
+    boost::algorithm::to_lower(cidade);
 
     for(auto i: imoveis){
-        if(i->getCidade() == cidade){
+      temp = i->getCidade();
+      boost::algorithm::to_lower(temp);
+        if(temp.find(cidade) != std::string::npos){
             buffer.push_back(i);
         }
     }
@@ -201,7 +208,7 @@ std::string Imovel::basicToString(){
 std::string Imovel::overallToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << getDescricao() << std::endl << "Valor: " << getValor() << EnderecoToString();
+  sstr << "Titulo: " << getDescricao() << std::endl << "Valor: " << getValor() << "\nEndereço:\n" << EnderecoToString();
 
   return sstr.str();
 }
@@ -329,6 +336,17 @@ void Apartamento::setArea(double area) {
     this->area = area;
 }
 
+std::string Apartamento::toString(){
+  std::stringstream sstr;
+
+  sstr << overallToString() << "Posição: " << getPosicao() << std::endl
+  << "Numero de quartos: " << getNumQuartos() << std::endl << "Valor do condominio: "
+  << getValorCondominio() << std::endl << "Vagas na garagem: " << getVagasGaragem() << std::endl
+  << "Área: " << getArea() << std::endl;
+
+  return sstr.str();
+}
+
 Apartamento::~Apartamento() {
 }
 
@@ -349,6 +367,14 @@ double Terreno::getArea() {
 
 void Terreno::setArea(double area) {
     this->area = area;
+}
+
+std::string Terreno::toString(){
+  std::stringstream sstr;
+
+  sstr << overallToString() << "Área do terreno: " << getArea() << std::endl;
+
+  return sstr.str();
 }
 
 Terreno::~Terreno() {
