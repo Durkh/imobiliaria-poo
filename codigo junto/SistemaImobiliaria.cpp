@@ -48,6 +48,18 @@ std::vector<Imovel*> SistemaImobiliaria::getImovelTipo(int tipo) {
     return buffer;
 }
 
+std::vector<Imovel*> SistemaImobiliaria::getImovelOferta(int oferta){
+  std::vector<Imovel*> myVector;
+
+  for(auto &i: imoveis){
+    if(i->getVenda() == oferta){
+      myVector.push_back(i);
+    }
+  }
+
+  return myVector;
+}
+
 std::vector<Imovel*> SistemaImobiliaria::getImoveisAlugarBairro(
         std::string bairro) {
 

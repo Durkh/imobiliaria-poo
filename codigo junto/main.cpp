@@ -179,10 +179,12 @@ void PrintImoveisPorOferta(SistemaImobiliaria &sistema, int &escolha){
 void PrintVector(std::vector<Imovel *> myVector){
   int indice = 0;
 
+  system("clear");
+
   for(auto &i: myVector){
     std::cout << "===============================\n";
-    std::cout << "Índice: " << indice;
-    std::cout << i->toString() << std::endl;
+    std::cout << "Índice: " << indice << std::endl;
+    std::cout << i->toString();
     indice++;
   }
 }
@@ -246,11 +248,11 @@ int main(void){
         break;
         case 2:
         MenuMostrarPorTipo(escolha);
-        PrintImoveisPorTipo(sistema, escolha);
+        PrintVector(sistema.getImovelTipo(escolha));
         break;
         case 3:
         MenuMostrarPorOferta(escolha);
-        PrintImoveisPorOferta(sistema, escolha);
+        PrintVector(sistema.getImovelOferta(escolha));
         break;
         default:
         std::cout << "Digite uma opção válida.\n";

@@ -179,6 +179,7 @@ public:
     std::vector<Imovel*> getImoveis();
     std::vector<std::string> getDescricao();
     std::vector<Imovel*> getImovelTipo(int tipo);
+    std::vector<Imovel*> getImovelOferta(int tipo);
     std::vector<Imovel*> getImoveisAlugarBairro(std::string bairro);
     std::vector<Imovel*> getImoveisVenderBairro(std::string bairro);
     std::vector<Imovel*> getImoveisCidade(std::string cidade);
