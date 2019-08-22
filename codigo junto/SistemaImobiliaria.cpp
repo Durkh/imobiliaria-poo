@@ -22,6 +22,13 @@ void SistemaImobiliaria::CadastraImovel(Imovel* imovel) {
 
 std::vector<Imovel*> SistemaImobiliaria::getImoveis() {
 
+  int indice = 0;
+
+    for(auto &i: imoveis){
+      i->setIndice(indice);
+      indice++;
+    }
+
     std::vector<Imovel*> buffer = imoveis;
 
     return buffer;
@@ -39,10 +46,14 @@ std::vector<std::string> SistemaImobiliaria::getDescricao() {
 
 std::vector<Imovel*> SistemaImobiliaria::getImovelTipo(int tipo) {
     std::vector<Imovel*> buffer;
+    int indice =0;
 
     for(auto i: imoveis){
-        if(i->getTipoOferta() == tipo)
+        if(i->getTipoOferta() == tipo){
+            i->setIndice(indice);
             buffer.push_back(i);
+          }
+        indice++;
     }
 
     return buffer;
@@ -50,11 +61,14 @@ std::vector<Imovel*> SistemaImobiliaria::getImovelTipo(int tipo) {
 
 std::vector<Imovel*> SistemaImobiliaria::getImovelOferta(int oferta){
   std::vector<Imovel*> myVector;
+  int indice = 0;
 
   for(auto &i: imoveis){
     if(i->getVenda() == oferta){
+      i->setIndice(indice);
       myVector.push_back(i);
     }
+    indice++;
   }
 
   return myVector;
@@ -97,6 +111,7 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisVenderBairro(
 std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
     std::vector<Imovel*> buffer;
     std::string temp;
+    int indice = 0;
 
     boost::algorithm::to_lower(cidade);
 
@@ -104,8 +119,10 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
       temp = i->getCidade();
       boost::algorithm::to_lower(temp);
         if(temp.find(cidade) != std::string::npos){
+            i->setIndice(indice);
             buffer.push_back(i);
         }
+      indice++;
     }
 
     return buffer;
@@ -114,6 +131,7 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisCidade(std::string cidade) {
 std::vector<Imovel*> SistemaImobiliaria::getImoveisBairro(std::string bairro) {
     std::vector<Imovel*> buffer;
     std::string temp;
+    int indice = 0;
 
     boost::algorithm::to_lower(bairro);
 
@@ -121,8 +139,10 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisBairro(std::string bairro) {
       temp = i->getBairro();
       boost::algorithm::to_lower(temp);
         if(temp.find(bairro) != std::string::npos){
-            buffer.push_back(i);
+          i->setIndice(indice);
+          buffer.push_back(i);
         }
+      indice++;
     }
 
     return buffer;
@@ -131,6 +151,7 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisBairro(std::string bairro) {
 std::vector<Imovel*> SistemaImobiliaria::getImoveisDescricao(std::string descricao) {
     std::vector<Imovel*> buffer;
     std::string temp;
+    int indice = 0;
 
     boost::algorithm::to_lower(descricao);
 
@@ -138,8 +159,10 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisDescricao(std::string descric
       temp = i->getDescricao();
       boost::algorithm::to_lower(temp);
         if(temp.find(descricao) != std::string::npos){
-            buffer.push_back(i);
+          i->setIndice(indice);
+          buffer.push_back(i);
         }
+      indice++;
     }
 
     return buffer;
@@ -147,11 +170,14 @@ std::vector<Imovel*> SistemaImobiliaria::getImoveisDescricao(std::string descric
 
 std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMaior(double valor){
   std::vector<Imovel *> myVector;
+  int indice = 0;
 
   for(auto &i: imoveis){
     if(i->getValor() > valor){
+      i->setIndice(indice);
       myVector.push_back(i);
     }
+    indice++;
   }
 
   return myVector;
@@ -159,11 +185,14 @@ std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMaior(double valor){
 
 std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMenor(double valor){
   std::vector<Imovel *> myVector;
+  int indice = 0;
 
   for(auto &i: imoveis){
     if(i->getValor() < valor){
+      i->setIndice(indice);
       myVector.push_back(i);
     }
+    indice++;
   }
 
   return myVector;
@@ -175,6 +204,17 @@ void SistemaImobiliaria::eraseImovel(int indice){
 
 void SistemaImobiliaria::setStartup(std::vector<Imovel*> myVector){
   imoveis = myVector;
+}
+
+int SistemaImobiliaria::getTipoPorIndice(int indice){
+  if(indice < imoveis.size() && indice >= 0)
+  return imoveis[indice]->getTipoOferta();
+  else
+  return 0;
+}
+
+void SistemaImobiliaria::editImovel(int indice, Imovel* imovel){
+  imoveis[indice] = imovel;
 }
 
 SistemaImobiliaria::~SistemaImobiliaria() {
@@ -198,6 +238,14 @@ Imovel::Imovel():valor(0), venda(false), descricao("none"), tipo(-1) {
 
 std::string Imovel::getDescricao(){
     return this->descricao;
+}
+
+void Imovel::setIndice(int indice){
+  this->indice = indice;
+}
+
+int Imovel::getIndice(){
+  return indice;
 }
 
 int Imovel::getTipoOferta(){

@@ -1,3 +1,7 @@
+/*
+ * Author: Iogo Sadrack Souza Soares
+ */
+
 #include <iostream>
 
 #include "SistemaImobiliaria.h"
@@ -61,6 +65,36 @@ void MenuCadastraCasa(SistemaImobiliaria &sistema, int escolha){
   sistema.CadastraImovel(casa);
 }
 
+void MenuEditCasa(int indice, SistemaImobiliaria &sistema){
+  int numPavimentos, numQuartos, numero;
+  double areaTerreno, areaConstruida, valor;
+  bool venda;
+  std::string descricao, logradouro, bairro, cidade, cep;
+  std::string catchEndLine;
+
+  system("clear");
+
+  std::cout << "Digite o numero de Pavimentos: ";
+  std::cin >> numPavimentos;
+  std::cout << "Numero de quartos: ";
+  std::cin >> numQuartos;
+  std::cout << "Área do terreno: ";
+  std::cin >> areaTerreno;
+  std::cout << "Área do construida: ";
+  std::cin >> areaConstruida;
+  Venda(&venda);
+  std::cout << "Qual o valor do imovel: ";
+  std::cin >> valor;
+  getline(std::cin, catchEndLine);
+  std::cout << "Descrição do imovel: \n";
+  getline(std::cin, descricao);
+  MenuEndereco(logradouro, numero, bairro, cidade, cep);
+
+  Casa *casa = new Casa(numPavimentos, numQuartos, areaTerreno, areaConstruida, venda, valor, 1, descricao, logradouro, numero, bairro, cidade, cep);
+
+  sistema.editImovel(indice, casa);
+}
+
 void MenuCadastraApartamento(SistemaImobiliaria &sistema, int escolha){
   int numQuartos, numero, vagasGaragem;
   double valorCondominio, valor, area;
@@ -94,6 +128,39 @@ void MenuCadastraApartamento(SistemaImobiliaria &sistema, int escolha){
   sistema.CadastraImovel(apartamento);
 }
 
+void MenuEditApartamento(int indice, SistemaImobiliaria &sistema){
+  int numQuartos, numero, vagasGaragem;
+  double valorCondominio, valor, area;
+  bool venda;
+  std::string descricao, logradouro, bairro, cidade, cep;
+  std::string catchEndLine, posicao;
+
+  system("clear");
+
+  getline(std::cin, catchEndLine);
+  std::cout << "Digite a posição: ";
+  getline(std::cin, posicao);
+  std::cout << "Numero de quartos: ";
+  std::cin >> numQuartos;
+  std::cout << "Valor do condominio: ";
+  std::cin >> valorCondominio;
+  std::cout << "Vagas de garagem: ";
+  std::cin >> vagasGaragem;
+  std::cout << "Área do apartamento: ";
+  std::cin >> area;
+  Venda(&venda);
+  std::cout << "Qual o valor do imovel: ";
+  std::cin >> valor;
+  getline(std::cin, catchEndLine);
+  std::cout << "Descrição do imovel: \n";
+  getline(std::cin, descricao);
+  MenuEndereco(logradouro, numero, bairro, cidade, cep);
+
+  Apartamento *apartamento = new Apartamento(posicao, numQuartos, valorCondominio, vagasGaragem, area, venda, valor, 2, descricao, logradouro, numero, bairro, cidade, cep);
+
+  sistema.editImovel(indice, apartamento);
+}
+
 void MenuCadastraTerreno(SistemaImobiliaria &sistema, int escolha){
   int numero;
   double area, valor;
@@ -118,10 +185,34 @@ void MenuCadastraTerreno(SistemaImobiliaria &sistema, int escolha){
   sistema.CadastraImovel(terreno);
 }
 
+void MenuEditTerreno(int indice, SistemaImobiliaria &sistema){
+  int numero;
+  double area, valor;
+  bool venda;
+  std::string descricao, logradouro, bairro, cidade, cep;
+  std::string catchEndLine;
+
+  system("clear");
+
+  std::cout << "Digite a área do imovel: ";
+  std::cin >> area;
+  Venda(&venda);
+  std::cout << "Qual o valor do imovel: ";
+  std::cin >> valor;
+  getline(std::cin, catchEndLine);
+  std::cout << "Descrição do imovel: \n";
+  getline(std::cin, descricao);
+  MenuEndereco(logradouro, numero, bairro, cidade, cep);
+
+  Terreno *terreno = new Terreno(area, venda, valor, 3, descricao, logradouro, numero, bairro, cidade, cep);
+
+  sistema.editImovel(indice, terreno);
+}
+
 void Menu(int &escolha){
 
   std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  3-Buscar.\n  4-Remover.\n";
-  std::cout << "  0-Salvar & Sair.\n";
+  std::cout << "  5-Editar.\n  0-Salvar & Sair.\n";
   std::cin >> escolha;
 }
 
@@ -177,15 +268,12 @@ void PrintImoveisPorOferta(SistemaImobiliaria &sistema, int &escolha){
 }
 
 void PrintVector(std::vector<Imovel *> myVector){
-  int indice = 0;
-
   system("clear");
 
   for(auto &i: myVector){
     std::cout << "===============================\n";
-    std::cout << "Índice: " << indice << std::endl;
+    std::cout << "Índice: " << i->getIndice() << std::endl;
     std::cout << i->toString();
-    indice++;
   }
 }
 
@@ -197,13 +285,19 @@ void MenuBusca(int &escolha){
 
 void MenuRemover(SistemaImobiliaria &sistema, std::string &strForSearch, int &escolha){
   std::cout << "Busque o imovel por titulo que deseja remover: ";
-  std::cin >> strForSearch;
+  getline(std::cin, strForSearch);
   PrintVector(sistema.getImoveisDescricao(strForSearch));
   std::cout << "Digite o índice que deseja remover: ";
   std::cin >> escolha;
 }
 
-int main(void){
+void MenuEditar(SistemaImobiliaria &sistema, int &escolha){
+  PrintVector(sistema.getImoveis());
+  std::cout << "Digite o indice do imovel ao qual deseja editar: ";
+  std::cin >> escolha;
+}
+
+int main(){
 
   SistemaImobiliaria sistema;
   GerenteDePersistencia gerente;
@@ -292,6 +386,23 @@ int main(void){
       case 4:
       MenuRemover(sistema, strForSearch, escolha);
       sistema.eraseImovel(escolha);
+      break;
+      case 5:
+      MenuEditar(sistema, escolha);
+      switch(sistema.getTipoPorIndice(escolha)){
+        case 1:
+        MenuEditCasa(escolha, sistema);
+        break;
+        case 2:
+        MenuEditApartamento(escolha, sistema);
+        break;
+        case 3:
+        MenuEditTerreno(escolha, sistema);
+        break;
+        default:
+        std::cout << "Indice não existe.\n";
+        break;
+      }
       break;
       case 0:
       gerente.SalvaImoveis(sistema.getImoveis());

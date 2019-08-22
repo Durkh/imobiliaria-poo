@@ -45,6 +45,7 @@ protected:
     Endereco endereco = Endereco();
     std::string descricao;
     int tipo; //tipo do imovel 1-casa, 2-apê, 3-terreno
+    int indice; //Mostra a posição do imovel no vetor.
 public:
     Imovel();
 
@@ -67,6 +68,8 @@ public:
     std::string getCidade();
     std::string getLogradouro();
     int getNumero();
+    void setIndice(int indice);
+    int getIndice();
 
     std::string EnderecoToString();
 
@@ -189,6 +192,10 @@ public:
     std::vector<Imovel*> getImoveisValorMenor(double valor);
 
     void setStartup(std::vector<Imovel*> myVector);
+
+    int getTipoPorIndice(int indice);
+
+    void editImovel(int indice, Imovel* imovel);
 
     void eraseImovel(int indice);
 
