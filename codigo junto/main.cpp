@@ -334,6 +334,7 @@ int main(){
         {
           system("clear");
           std::vector<Imovel*> myvector = sistema.getImoveis();
+
           for(auto &i: myvector){
             std::cout << "=================================\n";
             std::cout << i->basicToString();
@@ -379,6 +380,7 @@ int main(){
         std::cout << "Digite o valor: ";
         std::cin >> valor;
         PrintVector(sistema.getImoveisValorMenor(valor));
+        break;
         default:
         std::cout << "Digite uma opção válida.\n";
       }
