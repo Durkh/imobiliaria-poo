@@ -273,7 +273,7 @@ void PrintVector(std::vector<Imovel *> myVector){
   for(auto &i: myVector){
     std::cout << "===============================\n";
     std::cout << "Índice: " << i->getIndice() << std::endl;
-    std::cout << i->toString();
+    std::cout << i->overallToString();
   }
 }
 
@@ -309,6 +309,7 @@ int main(){
   sistema.setStartup(gerente.RecuperaImoveis());
 
   while(1){
+    PrintVector(sistema.getImoveis());
     Menu(escolha);
     switch(escolha){
       case 1:

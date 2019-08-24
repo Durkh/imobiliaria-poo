@@ -324,8 +324,8 @@ std::string Imovel::EnderecoToString(){
 std::string Imovel::basicToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << getDescricao() << std::endl << "Bairro: " << endereco.getBairro()
-  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << getValor()
+  sstr << "Titulo: " << descricao << std::endl << "Bairro: " << endereco.getBairro()
+  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << valor
   << std::endl;
 
   return sstr.str();
@@ -334,7 +334,7 @@ std::string Imovel::basicToString(){
 std::string Imovel::overallToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << getDescricao() << std::endl << "Valor: " << getValor() << "\nEndereço:\n" << EnderecoToString();
+  sstr << "Titulo: " << descricao << std::endl << "Valor: " << valor << "\nEndereço:\n" << EnderecoToString();
 
   return sstr.str();
 }
@@ -395,9 +395,9 @@ void Casa::setAreaConstruida(double areaConstruida) {
 std::string Casa::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Numero de pavimentos: " << getNumPavimentos() << std::endl
-  << "Numero de quartos: " << getNumQuartos() << std::endl << "Área do terreno: " << getAreaTerreno()
-  << std::endl << "Área construida: " << getAreaConstruida() << std::endl;
+  sstr << overallToString() << "Numero de pavimentos: " << numPavimentos << std::endl
+  << "Numero de quartos: " << numQuartos << std::endl << "Área do terreno: " << areaTerreno
+  << std::endl << "Área construida: " << areaConstruida << std::endl;
 
   return sstr.str();
 }
@@ -465,10 +465,10 @@ void Apartamento::setArea(double area) {
 std::string Apartamento::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Posição: " << getPosicao() << std::endl
-  << "Numero de quartos: " << getNumQuartos() << std::endl << "Valor do condominio: "
-  << getValorCondominio() << std::endl << "Vagas na garagem: " << getVagasGaragem() << std::endl
-  << "Área: " << getArea() << std::endl;
+  sstr << overallToString() << "Posição: " << posicao << std::endl
+  << "Numero de quartos: " << numQuartos << std::endl << "Valor do condominio: "
+  << valorCondominio << std::endl << "Vagas na garagem: " << vagasGaragem << std::endl
+  << "Área: " << area << std::endl;
 
   return sstr.str();
 }
@@ -498,7 +498,7 @@ void Terreno::setArea(double area) {
 std::string Terreno::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Área do terreno: " << getArea() << std::endl;
+  sstr << overallToString() << "Área do terreno: " << area << std::endl;
 
   return sstr.str();
 }
