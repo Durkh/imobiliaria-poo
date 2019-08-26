@@ -325,8 +325,8 @@ std::string Imovel::EnderecoToString(){
 std::string Imovel::basicToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << getDescricao() << std::endl << "Bairro: " << endereco.getBairro()
-  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << getValor()
+  sstr << "Titulo: " << Imovel::getDescricao() << std::endl << "Bairro: " << endereco.getBairro()
+  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << Imovel::getValor()
   << std::endl;
 
   return sstr.str();
@@ -566,11 +566,6 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                 buffer >> areaConstruida;
                 buffer.ignore();
 
-                std::cout << "Debug: " << std::endl << std:: endl;
-              std::cout << tipo << std::endl << valor << std::endl << logradouro << std::endl << numero << std::endl << cep <<
-              std::endl << bairro << std::endl << cidade << std::endl << descricao << std::endl << venda << std::endl << numPavimentos <<
-              std::endl << numQuartos << std::endl << areaTerreno << std::endl << areaTerreno << std::endl << areaConstruida << std::endl << std::endl;
-
                 x = new Casa(numPavimentos, numQuartos, areaTerreno, areaConstruida, venda, valor, tipo,
                              descricao, logradouro, numero, bairro, cidade, cep);
 
@@ -596,11 +591,6 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                   buffer >> area;
                   buffer.ignore();
 
-                  std::cout << "Debug: " << std::endl << std:: endl;
-                std::cout << "valor lido" << tipo << std::endl << valor << std::endl << logradouro << std::endl << numero << std::endl << cep <<
-                std::endl << bairro << std::endl << cidade << std::endl << descricao << std::endl << venda << std::endl << posicao << std::endl <<
-                numQuartos << std::endl << valorCondominio << std::endl << vagasGaragem << std::endl << area << std::endl << std::endl;
-
                 x = new Apartamento(posicao, numQuartos, valorCondominio, vagasGaragem, area, venda,
                                     valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
 
@@ -616,10 +606,6 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                 buffer >> area;
                 buffer.ignore();
 
-                std::cout << "Debug: " << std::endl << std:: endl;
-                std::cout << tipo << std::endl << valor << std::endl << logradouro << std::endl << numero << std::endl << cep <<
-                std::endl << bairro << std::endl << cidade << std::endl << descricao << std::endl << venda << std::endl << area << std::endl << std::endl;
-
                 x = new Terreno(area, venda, valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
 
                 imoveis.push_back(x);
@@ -631,7 +617,6 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
 
     }// while end
 
-    std::cout << "tamanho do array lido: " << imoveis.size() << std::endl << "fim do Debug;" << std:: endl << std::endl;
     return imoveis;
 }
 
