@@ -206,7 +206,7 @@ class GerenteDePersistencia{
 public:
     GerenteDePersistencia();
 
-    std::vector<Imovel*> RecuperaImoveis();
+    void RecuperaImoveis(SistemaImobiliaria *sistema);
     void SalvaImoveis(std::vector <Imovel*> lista);
 
     virtual ~GerenteDePersistencia();
