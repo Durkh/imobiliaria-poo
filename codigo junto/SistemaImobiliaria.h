@@ -2,7 +2,7 @@
  * SistemaImobiliaria.h
  *
  *  Created on: 19 de jul de 2019
- *      Author: egidio
+ *      Author: egidio, igor, iogo.
  */
 
 #ifndef SISTEMAIMOBILIARIA_H_

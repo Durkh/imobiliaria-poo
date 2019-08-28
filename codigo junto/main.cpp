@@ -1,5 +1,7 @@
 /*
  * Author: Iogo Sadrack Souza Soares
+ *         Igor de Oliveira
+ *         Egidio Neto
  */
 
 #include <iostream>
