@@ -22,7 +22,7 @@ void Venda(bool *p){
 void MenuEndereco(std::string &logradouro, int &numero, std::string &bairro, std::string &cidade, std::string &cep){
   std::string catchEndLine;
 
-  std::cout << "Logradouro do imovel: \n";
+  std::cout << "Logradouro do imovel: ";
   getline(std::cin, logradouro);
   std::cout << "Numero: ";
   std::cin >> numero;
@@ -56,7 +56,7 @@ void MenuCadastraCasa(SistemaImobiliaria &sistema, int escolha){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -86,7 +86,7 @@ void MenuEditCasa(int indice, SistemaImobiliaria &sistema){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -119,7 +119,7 @@ void MenuCadastraApartamento(SistemaImobiliaria &sistema, int escolha){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -152,7 +152,7 @@ void MenuEditApartamento(int indice, SistemaImobiliaria &sistema){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -176,7 +176,7 @@ void MenuCadastraTerreno(SistemaImobiliaria &sistema, int escolha){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -200,7 +200,7 @@ void MenuEditTerreno(int indice, SistemaImobiliaria &sistema){
   std::cout << "Qual o valor do imovel: ";
   std::cin >> valor;
   getline(std::cin, catchEndLine);
-  std::cout << "Descrição do imovel: \n";
+  std::cout << "Descrição do imovel: ";
   getline(std::cin, descricao);
   MenuEndereco(logradouro, numero, bairro, cidade, cep);
 
@@ -212,7 +212,7 @@ void MenuEditTerreno(int indice, SistemaImobiliaria &sistema){
 void Menu(int &escolha){
 
   std::cout << "Escolha uma opção:\n  1-Cadastrar imovel.\n  2-Mostrar.\n  3-Buscar.\n  4-Remover.\n";
-  std::cout << "  5-Editar.\n  0-Salvar & Sair.\n";
+  std::cout << "  5-Editar.\n  6-Sair.\n  0-Salvar & Sair.\n";
   std::cin >> escolha;
 }
 
@@ -224,6 +224,8 @@ void MenuEscolheCadastro(int &escolha){
 }
 
 void MenuMostrar(int &escolha){
+
+  system("clear");
   std::cout << "Escolha uma opção:\n  1-Listagem simples.\n  2-Listagem por tipo";
   std::cout << "(casa, apartamento, terreno).\n  3-Listagem por categoria(venda, aluguel).\n";
   std::cin >> escolha;
@@ -250,6 +252,8 @@ void PrintImoveisPorTipo(SistemaImobiliaria &sistema, int &escolha){
 }
 
 void MenuMostrarPorOferta(int &escolha){
+  system("clear");
+
   std::cout << "Escolha uma opção:\n  1-Venda.\n  0-Aluguel.\n";
   std::cin >> escolha;
 }
@@ -271,13 +275,16 @@ void PrintVector(std::vector<Imovel *> myVector){
   system("clear");
 
   for(auto &i: myVector){
-    std::cout << "===============================\n";
     std::cout << "Índice: " << i->getIndice() << std::endl;
-    std::cout << i->toString();
+    std::cout << i->toString() << std::endl;
+    std::cout << "===============================\n\n";
   }
 }
 
 void MenuBusca(int &escolha){
+
+  system("clear");
+
   std::cout << "Escolha uma opção:\n  1-Cidade.\n  2-Bairro.\n  3-Por Titulo.\n";
   std::cout << "  4-Por valor maior que...\n  5-Por valor menor que...\n";
   std::cin >> escolha;
@@ -306,7 +313,9 @@ int main(){
   std::string strForSearch;
   double valor;
 
-  sistema.setStartup(gerente.RecuperaImoveis());
+  system("clear");
+
+  gerente.RecuperaImoveis(&sistema);
 
   while(1){
     Menu(escolha);
@@ -335,9 +344,10 @@ int main(){
           system("clear");
           std::vector<Imovel*> myvector = sistema.getImoveis();
 
+          std::cout << "=================================\n\n";
           for(auto &i: myvector){
-            std::cout << "=================================\n";
-            std::cout << i->basicToString();
+            std::cout << i->basicToString() << std::endl;
+            std::cout << "=================================\n\n";
           }
         }
         break;
@@ -409,6 +419,8 @@ int main(){
       case 0:
       gerente.SalvaImoveis(sistema.getImoveis());
       return 1;
+      case 6:
+      return 2;
       default:
       std::cout << "Digite uma opção válida.\n";
     }

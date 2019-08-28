@@ -200,7 +200,7 @@ std::vector<Imovel *> SistemaImobiliaria::getImoveisValorMenor(double valor){
 }
 
 void SistemaImobiliaria::eraseImovel(int indice){
-  imoveis.erase(imoveis.begin() + indice - 1);
+  imoveis.erase(imoveis.begin() + indice);
 }
 
 void SistemaImobiliaria::setStartup(std::vector<Imovel*> myVector){
@@ -325,8 +325,8 @@ std::string Imovel::EnderecoToString(){
 std::string Imovel::basicToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << Imovel::getDescricao() << std::endl << "Bairro: " << endereco.getBairro()
-  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << Imovel::getValor()
+  sstr << "Titulo: " << descricao << std::endl << "Bairro: " << endereco.getBairro()
+  << std::endl << "Cidade: " << endereco.getCidade() << std::endl << "Valor: " << valor
   << std::endl;
 
   return sstr.str();
@@ -335,7 +335,7 @@ std::string Imovel::basicToString(){
 std::string Imovel::overallToString(){
   std::stringstream sstr;
 
-  sstr << "Titulo: " << getDescricao() << std::endl << "Valor: " << getValor() << "\nEndereço:\n" << EnderecoToString();
+  sstr << "Titulo: " << descricao << std::endl << "Valor: " << valor << "\nEndereço:\n" << EnderecoToString();
 
   return sstr.str();
 }
@@ -396,9 +396,9 @@ void Casa::setAreaConstruida(double areaConstruida) {
 std::string Casa::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Numero de pavimentos: " << getNumPavimentos() << std::endl
-  << "Numero de quartos: " << getNumQuartos() << std::endl << "Área do terreno: " << getAreaTerreno()
-  << std::endl << "Área construida: " << getAreaConstruida() << std::endl;
+  sstr << overallToString() << "Numero de pavimentos: " << numPavimentos << std::endl
+  << "Numero de quartos: " << numQuartos << std::endl << "Área do terreno: " << areaTerreno
+  << std::endl << "Área construida: " << areaConstruida << std::endl;
 
   return sstr.str();
 }
@@ -466,10 +466,10 @@ void Apartamento::setArea(double area) {
 std::string Apartamento::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Posição: " << getPosicao() << std::endl
-  << "Numero de quartos: " << getNumQuartos() << std::endl << "Valor do condominio: "
-  << getValorCondominio() << std::endl << "Vagas na garagem: " << getVagasGaragem() << std::endl
-  << "Área: " << getArea() << std::endl;
+  sstr << overallToString() << "Posição: " << posicao << std::endl
+  << "Numero de quartos: " << numQuartos << std::endl << "Valor do condominio: "
+  << valorCondominio << std::endl << "Vagas na garagem: " << vagasGaragem << std::endl
+  << "Área: " << area << std::endl;
 
   return sstr.str();
 }
@@ -499,7 +499,7 @@ void Terreno::setArea(double area) {
 std::string Terreno::toString(){
   std::stringstream sstr;
 
-  sstr << overallToString() << "Área do terreno: " << getArea() << std::endl;
+  sstr << overallToString() << "Área do terreno: " << area << std::endl;
 
   return sstr.str();
 }
@@ -510,11 +510,11 @@ Terreno::~Terreno() {
 GerenteDePersistencia::GerenteDePersistencia() {
 }
 
-std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
+void GerenteDePersistencia::RecuperaImoveis(SistemaImobiliaria *sistema) {
     std::ifstream buffer;
-    std::vector<Imovel*> imoveis;
-    Imovel* x;
-    int tipo, numero;
+    //std::vector<Imovel*> imoveis;
+    //Imovel* x;
+    int tipo, numero, size;
     double valor;
     bool venda;
     std::string descricao, logradouro, bairro, cidade, cep;
@@ -523,9 +523,13 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
 
     if(!buffer.is_open() ){
         std::cout << "erro ao abrir arquivo" << std::endl;
-        return imoveis;
+        //return imoveis;
     }
-    while(buffer){
+
+    buffer >> size;
+    buffer.ignore();
+
+    for(int i=0; i<size; i++){
 
         if(buffer.bad() || buffer.eof() || buffer.fail()) break;
         {
@@ -566,11 +570,10 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                 buffer >> areaConstruida;
                 buffer.ignore();
 
-                x = new Casa(numPavimentos, numQuartos, areaTerreno, areaConstruida, venda, valor, tipo,
+                Casa *x = new Casa(numPavimentos, numQuartos, areaTerreno, areaConstruida, venda, valor, tipo,
                              descricao, logradouro, numero, bairro, cidade, cep);
 
-                imoveis.push_back(x);
-                delete x;
+                sistema->CadastraImovel(x);
             }
                 break;
             case 2:{
@@ -591,12 +594,10 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                   buffer >> area;
                   buffer.ignore();
 
-                x = new Apartamento(posicao, numQuartos, valorCondominio, vagasGaragem, area, venda,
+                Apartamento *x = new Apartamento(posicao, numQuartos, valorCondominio, vagasGaragem, area, venda,
                                     valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
 
-                imoveis.push_back(x);
-
-                delete x;
+                sistema->CadastraImovel(x);
             }
                 break;
             case 3:{
@@ -606,10 +607,9 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
                 buffer >> area;
                 buffer.ignore();
 
-                x = new Terreno(area, venda, valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
+                Terreno *x = new Terreno(area, venda, valor, tipo, descricao, logradouro, numero, bairro, cidade, cep);
 
-                imoveis.push_back(x);
-                delete x;
+                sistema->CadastraImovel(x);
             }
                 break;
 
@@ -617,7 +617,12 @@ std::vector<Imovel*> GerenteDePersistencia::RecuperaImoveis() {
 
     }// while end
 
-    return imoveis;
+    std::cout << "tamanho do array lido: " << sistema->getImoveis().size() << std::endl << std::endl;
+
+    for(auto &i: sistema->getImoveis()){
+      std::cout << i->basicToString() << std::endl;
+      std::cout << "===============================\n\n";
+    }
 }
 
 void GerenteDePersistencia::SalvaImoveis(std::vector<Imovel*> lista) {
@@ -632,14 +637,14 @@ void GerenteDePersistencia::SalvaImoveis(std::vector<Imovel*> lista) {
 
     if(lista.empty()) return;
 
+    buffer << lista.size() << std::endl;
+
     for (auto i: lista){
         buffer << i->getTipoOferta() << std::endl;
         buffer << i->getValor() << std::endl;
         buffer << i->EnderecoToString();
         buffer << i->getDescricao() << std::endl;
         buffer << i->getVenda() << std::endl;
-
-        std::cout << "imoveis save" << std::endl;
 
         switch(i->getTipoOferta()){
             case 1:
@@ -661,8 +666,6 @@ void GerenteDePersistencia::SalvaImoveis(std::vector<Imovel*> lista) {
             case 3:
                 buffer << i->getArea();
                 if(lista.size() > 1) buffer << std::endl;
-
-                std::cout << "imovel save" << std::endl;
         }
     }
 
