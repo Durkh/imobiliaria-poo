@@ -2,7 +2,7 @@
  * SIstemaImobiliaria.cpp
  *
  *  Created on: 19 de jul de 2019
- *      Author: egidio
+ *      Author: egidio, iogo, igor
  */
 
 #include "SistemaImobiliaria.h"
